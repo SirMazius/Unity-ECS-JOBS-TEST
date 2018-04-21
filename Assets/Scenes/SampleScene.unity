@@ -285,7 +285,7 @@ Prefab:
     - target: {fileID: 114254859992890288, guid: 9c0eebd5ca7fbab43834b4bcf3f980b2,
         type: 2}
       propertyPath: number
-      value: 1
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 114254859992890288, guid: 9c0eebd5ca7fbab43834b4bcf3f980b2,
         type: 2}

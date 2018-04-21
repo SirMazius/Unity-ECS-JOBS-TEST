@@ -45,16 +45,25 @@ public class GameBootstrapper
         CreateCubes(entityManager);
     }
 
+
+    /*
+        TODO: Hacer que pueda crear cubos o de forma Random o de acuerdo a un Grid
+        Crea los cubos segun el esquema indicado en el flag 
+    */
     private static void CreateCubes(EntityManager entityManager)
     {
+        var n = Settings.number;
 
-        Entity cube = entityManager.CreateEntity(CubeArchetype);
+        for (int i = 0; i < n; i++)
+        {
+            Entity cube = entityManager.CreateEntity(CubeArchetype);
 
-        entityManager.SetComponentData(cube, new Position() { Value = new float3(0,0,0) });
-        entityManager.SetComponentData(cube, new Heading() { Value = new float3(0,0,1) });
-        entityManager.SetComponentData(cube, new VelocityMag() { Value = 5f });
+            entityManager.SetComponentData(cube, new Position() { Value = new float3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)) });
+            entityManager.SetComponentData(cube, new Heading() { Value = new float3(0, 0, 1) });
+            entityManager.SetComponentData(cube, new VelocityMag() { Value = 5f });
 
-        entityManager.AddSharedComponentData(cube, CubeLook);
+            entityManager.AddSharedComponentData(cube, CubeLook);
+        }
 
     }
 
