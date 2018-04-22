@@ -5,5 +5,5 @@ Es necesaria la siguiente versión de Unity -> https://beta.unity3d.com/download
 
 (Cuando haya algo que enseñar aquí aparecerá...)
 
-![Moviendo partículas](https://gfycat.com/ChubbyVeneratedEyra)
+![Moviendo partículas](https://thumbs.gfycat.com/ChubbyVeneratedEyra-size_restricted.gif)
 
