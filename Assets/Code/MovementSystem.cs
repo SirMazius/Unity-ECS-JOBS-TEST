@@ -3,6 +3,7 @@ using UnityEngine;
 using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Jobs;
+using Unity.Collections;
 
 //public class MovementSystem : ComponentSystem
 //{
@@ -27,29 +28,32 @@ using Unity.Jobs;
 //            var next_position = current_position + data.directions[i].Value * dt;
 //            data.positions[i] = new Position() {Value = next_position};
 //        }
-        
+
 //    }
 
 //}
 
-
+[UpdateBefore(typeof(AuxSystem))]
 public class MovementJobSystem : JobComponentSystem
 {
     [ComputeJobOptimization]
-    struct Movemente : IJobProcessComponentData<Position, Heading>
+    public struct Movement : IJobProcessComponentData<Position, Heading>
     {
 
         public float dt;
 
-        public void Execute(ref Position pos,  ref Heading head)
+        public void Execute(ref Position pos, ref Heading head)
         {
             pos.Value = pos.Value + head.Value * dt;
         }
     }
 
+    
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
-        var job = new Movemente() { dt = Time.deltaTime };
-        return job.Schedule(this, 128);
+        
+        Debug.Log("Job 1");
+        var job = new Movement() { dt = Time.deltaTime };
+        return job.Schedule(this, 128, inputDeps);
     }
 }

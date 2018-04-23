@@ -5,6 +5,8 @@ using Unity.Entities;
 using Unity.Rendering;
 using Unity.Transforms;
 using Unity.Mathematics;
+using Unity.Collections;
+using Unity.Jobs;
 
 public class GameBootstrapper
 {
@@ -14,6 +16,11 @@ public class GameBootstrapper
     public static MeshInstanceRenderer CubeLook; //< El look
 
     public static TestSettings Settings;
+
+    public static NativeArray<NativeQueue<int>.Concurrent> a;
+
+    //public static NativeArray<int> a;
+
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Initialize()
@@ -27,9 +34,18 @@ public class GameBootstrapper
     {
         var settingsGO = GameObject.Find("Settings");
         Settings = settingsGO.GetComponent<TestSettings>();
+        //a = new NativeArray<int>(Settings.number, Allocator.Persistent);
         CubeLook = GetLook("CubeRender");
+
+        a = new NativeArray<NativeQueue<int>.Concurrent>(500, Allocator.Persistent);
+        var j = new CreateTableSystem.InitializeTable() { };
+        JobHandle jH = j.Schedule();
+        jH.Complete();
         NewGame();
     }
+
+
+    
 
     private static MeshInstanceRenderer GetLook(string name)
     {

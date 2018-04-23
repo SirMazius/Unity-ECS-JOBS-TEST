@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SerializedData:
-    mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
     material: {fileID: 2100000, guid: d5ab383f922913548b631eaafc04b115, type: 2}
     castShadows: 0
     receiveShadows: 0
@@ -285,7 +285,7 @@ Prefab:
     - target: {fileID: 114254859992890288, guid: 9c0eebd5ca7fbab43834b4bcf3f980b2,
         type: 2}
       propertyPath: number
-      value: 1000
+      value: 30000
       objectReference: {fileID: 0}
     - target: {fileID: 114254859992890288, guid: 9c0eebd5ca7fbab43834b4bcf3f980b2,
         type: 2}
