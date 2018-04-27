@@ -7,3 +7,4 @@ Es necesaria la siguiente versión de Unity -> https://beta.unity3d.com/download
 
 ![Moviendo partículas](https://thumbs.gfycat.com/ChubbyVeneratedEyra-size_restricted.gif)
 
+Continuará...
