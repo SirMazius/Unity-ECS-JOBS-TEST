@@ -15,12 +15,18 @@ public class GameBootstrapper
 
     public static MeshInstanceRenderer CubeLook; //< El look
 
+    public static NativeMultiHashMap<int, int> hTable;
+    
     public static TestSettings Settings;
-
-    public static NativeArray<NativeQueue<int>.Concurrent> a;
 
     //public static NativeArray<int> a;
 
+    public struct Data
+    {
+        public int Lenght;
+        public ComponentDataArray<Position> positions;
+        public ComponentDataArray<Heading> directions;
+    }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Initialize()
@@ -34,13 +40,26 @@ public class GameBootstrapper
     {
         var settingsGO = GameObject.Find("Settings");
         Settings = settingsGO.GetComponent<TestSettings>();
-        //a = new NativeArray<int>(Settings.number, Allocator.Persistent);
         CubeLook = GetLook("CubeRender");
 
-        a = new NativeArray<NativeQueue<int>.Concurrent>(500, Allocator.Persistent);
-        var j = new CreateTableSystem.InitializeTable() { };
+        var j = new HashTableSystem.GetTamTable() { };
         JobHandle jH = j.Schedule();
         jH.Complete();
+
+        hTable = new NativeMultiHashMap<int, int>(Settings.HashTam, Allocator.Persistent);
+
+        
+
+        var j2 = new HashTableSystem.InsertParticles() { hM = hTable };
+        JobHandle jH2 =  j2.Schedule(jH);
+        jH2.Complete();
+
+
+        NativeMultiHashMapIterator<int> it;
+        int item;
+        hTable.TryGetFirstValue(5, out item, out it);
+        Debug.Log("ESPERO QUE SALGA -> " + item);
+
         NewGame();
     }
 

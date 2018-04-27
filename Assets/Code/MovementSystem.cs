@@ -37,7 +37,7 @@ using Unity.Collections;
 public class MovementJobSystem : JobComponentSystem
 {
     [ComputeJobOptimization]
-    public struct Movement : IJobProcessComponentData<Position, Heading>
+    public struct Movement : IJobProcessComponentData<Position, Heading >
     {
 
         public float dt;
@@ -52,7 +52,7 @@ public class MovementJobSystem : JobComponentSystem
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         
-        Debug.Log("Job 1");
+        
         var job = new Movement() { dt = Time.deltaTime };
         return job.Schedule(this, 128, inputDeps);
     }

@@ -27,7 +27,7 @@ public class AuxSystem : JobComponentSystem
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
 
-        Debug.Log("Job2");
+        
         var Job = new AuxMovemente() { dt = Time.deltaTime };
         return Job.Schedule(this, 128, inputDeps);
     }

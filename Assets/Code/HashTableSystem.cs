@@ -1,13 +1,27 @@
-﻿using UnityEngine;
-using System.Collections;
-using Unity.Jobs;
+﻿using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
+using Unity.Jobs;
+using Unity.Transforms;
+using UnityEngine;
 
-public class CreateTableSystem : JobComponentSystem
+public class HashTableSystem : JobComponentSystem
 {
 
-    public struct InitializeTable : IJob
+
+
+    public struct InsertParticles : IJob
+    {
+
+        public NativeMultiHashMap<int, int> hM;
+
+        public void Execute()
+        {
+            hM.Add(5, 5);
+            
+        }
+    }
+
+    public struct GetTamTable : IJob
     {
 
         const int prime1 = 73856093;
@@ -16,7 +30,7 @@ public class CreateTableSystem : JobComponentSystem
 
         public void Execute()
         {
-            Debug.Log("EL SIGUIENTE PRIMO ES -> " + FindNextPrime());
+            GameBootstrapper.Settings.HashTam =  FindNextPrime();
         }
 
         public int FindNextPrime()

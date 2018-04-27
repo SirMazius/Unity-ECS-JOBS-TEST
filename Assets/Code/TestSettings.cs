@@ -12,6 +12,11 @@ public class TestSettings : MonoBehaviour
     public float3 direction;
     public float velocity_magnitude;
     public int number;
+    public int HashTam;
+
+    const int prime1 = 73856093;
+    const int prime2 = 19349663;
+    const int prime3 = 83492791;
 
     ////public struct Data
     ////{
@@ -32,6 +37,6 @@ public class TestSettings : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameBootstrapper.a.Dispose();
+        GameBootstrapper.hTable.Dispose();
     }
 }
