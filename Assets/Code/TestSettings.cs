@@ -13,6 +13,21 @@ public class TestSettings : MonoBehaviour
     public float velocity_magnitude;
     public int number;
 
+    private int hashTam;
+
+    public int HashTam
+    {
+        get
+        {
+            return hashTam;
+        }
+
+        set
+        {
+            hashTam = value;
+        }
+    }
+
     ////public struct Data
     ////{
     ////    public ComponentDataArray<Position> Position;
@@ -30,8 +45,11 @@ public class TestSettings : MonoBehaviour
     //    JobHandle jH = job2.Schedule();
     //}
 
+    /*
+       Limpiamos la memoria al acabar la escenar
+    */
     private void OnDestroy()
     {
-        GameBootstrapper.a.Dispose();
+       
     }
 }

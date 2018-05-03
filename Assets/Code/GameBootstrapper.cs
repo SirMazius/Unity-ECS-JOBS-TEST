@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Unity.Entities;
 using Unity.Rendering;
 using Unity.Transforms;
 using Unity.Mathematics;
-using Unity.Collections;
-using Unity.Jobs;
+
 
 public class GameBootstrapper
 {
@@ -15,13 +12,11 @@ public class GameBootstrapper
 
     public static MeshInstanceRenderer CubeLook; //< El look
 
-    public static TestSettings Settings;
+    public static TestSettings Settings; //< Los settings almacenados en un Script asociado a un GameObject normal en la escena
 
-    public static NativeArray<NativeQueue<int>.Concurrent> a;
-
-    //public static NativeArray<int> a;
-
-
+    /*
+        Creamos un Arquetipo que representara la informacion de cada uno de las entidades 
+    */
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Initialize()
     {
@@ -29,24 +24,32 @@ public class GameBootstrapper
         CubeArchetype = entityManager.CreateArchetype(typeof(Position), typeof(Heading), typeof(VelocityMag), typeof(TransformMatrix));
     }
 
+
+    /*
+        Inicializamos el Juego 
+    */
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void InitializeWithScene()
     {
         var settingsGO = GameObject.Find("Settings");
         Settings = settingsGO.GetComponent<TestSettings>();
-        //a = new NativeArray<int>(Settings.number, Allocator.Persistent);
         CubeLook = GetLook("CubeRender");
 
-        a = new NativeArray<NativeQueue<int>.Concurrent>(500, Allocator.Persistent);
-        var j = new CreateTableSystem.InitializeTable() { };
-        JobHandle jH = j.Schedule();
-        jH.Complete();
         NewGame();
     }
 
+    /*
+        Recogemos el EntityManager y añadimos todos los cubos 
+    */
+    public static void NewGame()
+    {
+        var entityManager = World.Active.GetOrCreateManager<EntityManager>();
+        CreateCubes(entityManager);
+    }
 
-    
-
+    /*
+        Busacamos la skin de un GameObject convencional y la extraemos para asociarla a las entidades 
+    */
     private static MeshInstanceRenderer GetLook(string name)
     {
         var obj = GameObject.Find(name);
@@ -55,16 +58,9 @@ public class GameBootstrapper
         return result;
     }
 
-    public static void NewGame()
-    {
-        var entityManager = World.Active.GetOrCreateManager<EntityManager>();
-        CreateCubes(entityManager);
-    }
-
 
     /*
-        TODO: Hacer que pueda crear cubos o de forma Random o de acuerdo a un Grid
-        Crea los cubos segun el esquema indicado en el flag 
+        Genera una malla de objetos de forma aleatoria
     */
     private static void CreateCubes(EntityManager entityManager)
     {
@@ -72,12 +68,19 @@ public class GameBootstrapper
 
         for (int i = 0; i < n; i++)
         {
-            Entity cube = entityManager.CreateEntity(CubeArchetype);
+            Entity cube = entityManager.CreateEntity(CubeArchetype); //< Creamos una entidad nueva y guardamos una referencia
 
+
+            /*
+                Añadimos los componentes especificos de esa entidad 
+            */
             entityManager.SetComponentData(cube, new Position() { Value = new float3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)) });
             entityManager.SetComponentData(cube, new Heading() { Value = new float3(0, 0, 1) });
             entityManager.SetComponentData(cube, new VelocityMag() { Value = 5f });
 
+            /*
+                Añadimos los valores comunes a las instancias   
+            */
             entityManager.AddSharedComponentData(cube, CubeLook);
         }
 
